@@ -1,0 +1,4 @@
+modules/floofbox/wireguard.nix
+certs/
+.direnv
+.env
