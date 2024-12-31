@@ -3,17 +3,13 @@
 # and in the NixOS manual (accessible by running `nixos-help`).
 {pkgs, ...}: {
   imports = [
-    ../../software/development.nix
-    ../../software/graphical.nix
-    ../../software/system.nix
+    # ../../software/development.nix
+    # ../../software/graphical.nix
+    # ../../software/system.nix
 
     ../../modules/virtualisation/docker.nix
-    ../../modules/bluetooth.nix
-    ../../modules/windowing.nix
-    ../../modules/system.nix
-    ../../modules/sound.nix
-
-    ../../users/noel
+    ../../modules/graphical.nix
+    ../../modules/common.nix
     ./hardware.nix
   ];
 
@@ -70,6 +66,13 @@
     enable32Bit = true;
     extraPackages = with pkgs; [mesa.drivers];
   };
+
+  # Enable Bluetooth capabilities
+  # `kotoha` is the only machine (except `miki`) that has bluetooth
+  # avaliable.
+  hardware.bluetooth.enable = true;
+  hardware.bluetooth.powerOnBoot = true;
+  services.blueman.enable = true;
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions

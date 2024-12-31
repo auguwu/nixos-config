@@ -10,17 +10,8 @@
     then "/Users/noel"
     else "/home/noel";
 in {
-  imports =
-    [
-      ../../software/bat.nix
-      ../../software/git.nix
-      ../../software/eza.nix
-      ../../software/gh.nix
-    ]
-    ++ lib.flatten (lib.optional graphical ../../software/graphical/home-manager.nix);
-
+  imports = lib.flatten (lib.optional graphical ../../modules/graphical.home-manager.nix);
   home.sessionVariables = {
-    KUBECONFIG = lib.concatStringsSep ":" ["/etc/rancher/k3s/k3s.yaml" "${homedir}/.kube/config"];
     EDITOR = "nano";
     VISUAL = "code-insiders";
   };
@@ -82,5 +73,46 @@ in {
         eval "$(direnv hook zsh)"
       '';
     };
+  };
+
+  programs.git = {
+    enable = true;
+    package = pkgs.gitAndTools.gitFull;
+    userName = "Noel";
+    userEmail = "cutie@floofy.dev";
+    lfs.enable = true;
+    extraConfig = {
+      user.signingkey = "63182D5FE7A237C9";
+      init.defaultBranch = "master";
+      pull.rebase = true; # i am getting better at this :>
+      safe.directory = "*"; # i don't care, even though i probably should
+      push.autoSetupRemote = true;
+      includeIf."gitdir:/Workspaces/Noelware/Internal/".path = "/Workspaces/Noelware/.gitconfig";
+      includeIf."gitdir:/Workspaces/Noel/Internal/".path = "/Workspaces/Noel/.gitconfig";
+    };
+  };
+
+  programs.gh = {
+    enable = true;
+    settings = {
+      # workaround for https://github.com/nix-community/home-manager/issues/4744
+      version = 1;
+      git_protocol = "ssh";
+      editor = "${pkgs.nano}/bin/nano"; # use `nano` for the editor
+    };
+
+    extensions = with pkgs; [
+      gh-actions-cache
+    ];
+  };
+
+  programs.eza = {
+    enable = true;
+    git = true;
+  };
+
+  programs.bat = {
+    enable = true;
+    config.theme = "Nord";
   };
 }

@@ -1,8 +1,13 @@
 {
-  description = "Noel 🌺's .dotfiles configuration";
+  description = "Noel's dotfiles configuration for my devices that run NixOS";
+
+  # Include the binary caches for my own projects and Noelware's as well.
   nixConfig = {
     extra-substituters = [
+      # TODO: switch to https://nix.floofy.dev
       "https://noel.cachix.org"
+
+      # TODO: switch to https://nix.noelware.org
       "https://noelware.cachix.org"
     ];
 
@@ -16,6 +21,7 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     hardware.url = "github:NixOS/nixos-hardware";
     systems.url = "github:nix-systems/default";
+
     darwin = {
       url = "github:LnL7/nix-darwin";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -26,161 +32,83 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    vscode-server = {
-      url = "github:nix-community/nixos-vscode-server";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    # ume = {
-    #   url = "github:auguwu/ume/4.0.5";
+    # noelware = {
+    #   url = "github:Noelware/nixpkgs-noelware";
     #   inputs = {
     #     nixpkgs.follows = "nixpkgs";
+    #     systems.follows = "systems";
     #   };
     # };
 
-    # noeldoc = {
-    #   url = "github:noeldoc-build/noeldoc/0.1.0";
-    #   inputs.nixpkgs.follows = "nixpkgs";
-    # };
-
-    # charted = {
-    #   url = "github:charted-dev/charted/0.1.0";
-    #   inputs.nixpkgs.follows = "nixpkgs";
+    # noel = {
+    #   url = "github:auguwu/nixpkgs-overlay";
+    #   inputs = {
+    #     nixpkgs.follows = "nixpkgs";
+    #     systems.follows = "systems";
+    #   };
     # };
   };
 
   outputs = {
     nixpkgs,
-    home-manager,
-    vscode-server,
-    #ume,
-    hardware,
-    systems,
     darwin,
+    home-manager,
+    systems,
+    hardware,
     ...
-  }: let
+  } @ inputs: let
     eachSystem = nixpkgs.lib.genAttrs (import systems);
+    overlays = [
+      # noelware.overlays.default
+      # noel.overlays.default
+
+      # temporary overlay to fix the `dmraid` package since the patch
+      # hasn't landed in `nixos-unstable` yet, remove once avaliable
+      #
+      # ref: https://github.com/NixOS/nixpkgs/pull/368470
+      (final: prev: {
+        dmraid = prev.dmraid.overrideAttrs (oA: {
+          patches = oA.patches ++ [
+            (prev.fetchpatch2 {
+              url = "https://raw.githubusercontent.com/NixOS/nixpkgs/f298cd74e67a841289fd0f10ef4ee85cfbbc4133/pkgs/os-specific/linux/dmraid/fix-dmevent_tool.patch";
+              hash = "sha256-MmAzpdM3UNRdOk66CnBxVGgbJTzJK43E8EVBfuCFppc=";
+            })
+          ];
+        });
+      })
+    ];
+
+    mkSystem = import ./lib/mkSystem.nix {
+      inherit nixpkgs inputs overlays;
+    };
+
     nixpkgsFor = system:
       import nixpkgs {
         inherit system;
       };
-
-    mkDarwinSystem = name: {
-      modules ? [],
-      graphical ? true,
-    }: let
-      modules' =
-        modules
-        ++ [
-          home-manager.darwinModules.home-manager
-
-          ./hosts/${name}/configuration.nix
-
-          {
-            home-manager = {
-              useUserPackages = true;
-              useGlobalPkgs = true;
-              users.noel = import ./users/noel/home.nix;
-              extraSpecialArgs = {
-                inherit graphical;
-
-                machine = name;
-              };
-            };
-          }
-        ];
-    in
-      darwin.lib.darwinSystem {
-        system = "aarch64-darwin";
-        modules = modules';
-      };
-
-    mkNixSystem = name: {
-      system,
-      graphical ? false,
-      modules ? [],
-    }: let
-      modules' =
-        modules
-        ++ [
-          home-manager.nixosModules.home-manager
-          vscode-server.nixosModules.default
-
-          ./hosts/${name}/configuration.nix
-
-          {
-            home-manager = {
-              useUserPackages = true;
-              useGlobalPkgs = true;
-              users.noel = import ./users/noel/home.nix;
-              extraSpecialArgs = {
-                inherit graphical;
-                machine = name;
-              };
-            };
-          }
-        ];
-    in
-      nixpkgs.lib.nixosSystem {
-        inherit system;
-
-        modules = modules';
-      };
   in {
     formatter = eachSystem (system: (nixpkgsFor system).alejandra);
-    homeConfigurations."noel" = home-manager.lib.homeManagerConfiguration {
-      pkgs = nixpkgsFor builtins.currentSystem;
-      modules = [./users/noel/home.nix];
-    };
-
     nixosConfigurations = {
-      # `floofbox`: main workstation
-      floofbox = mkNixSystem "floofbox" rec {
-        graphical = true;
+      floofbox = mkSystem "floofbox" {
         system = "x86_64-linux";
         modules = [
           hardware.nixosModules.common-cpu-amd
           hardware.nixosModules.common-gpu-amd
-
-          {
-            environment.systemPackages = [
-              # ume.packages.${system}.ume
-
-              # noeldoc.packages.${system}.noeldoc
-              # charted.packages.${system}.helm-plugin
-            ];
-          }
         ];
       };
 
-      # `kotoha`: Framework 13 Laptop
-      kotoha = mkNixSystem "kotoha" rec {
-        graphical = true;
+      kotoha = mkSystem "kotoha" {
         system = "x86_64-linux";
         modules = [
           hardware.nixosModules.framework-13-7040-amd
-          {
-            environment.systemPackages = [
-              # ume.packages.${system}.ume
-
-              # noeldoc.packages.${system}.noeldoc
-              # charted.packages.${system}.helm-plugin
-            ];
-          }
         ];
       };
     };
 
     darwinConfigurations = {
-      # `miki`: Home-server Mac Mini
-      miki = mkDarwinSystem "miki" {
-        modules = [
-          {
-            environment.systemPackages = [
-              # ume.packages.aarch64-darwin.ume
-            ];
-          }
-        ];
+      miki = mkSystem "miki" {
+        system = "aarch64-darwin";
+        darwin = true;
       };
     };
   };

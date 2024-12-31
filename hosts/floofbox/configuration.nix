@@ -8,21 +8,21 @@
 }: {
   imports =
     [
-      ../../software/graphical/jetbrains.nix
-      ../../software/development.nix
-      ../../software/graphical.nix
-      ../../software/system.nix
-      ../../software/gaming.nix
+      # ../../software/graphical/jetbrains.nix
+      # ../../software/development.nix
+      # ../../software/graphical.nix
+      # ../../software/system.nix
+      # ../../software/gaming.nix
+
+      # ../../modules/bluetooth.nix
+      # ../../modules/windowing.nix
+      # ../../modules/system.nix
+      # ../../modules/sound.nix
 
       ../../modules/virtualisation/libvirt.nix
       ../../modules/virtualisation/docker.nix
-      ../../modules/bluetooth.nix
-      ../../modules/windowing.nix
-      ../../modules/system.nix
-      ../../modules/sound.nix
-
-      ../../users/noel
-
+      ../../modules/graphical.nix
+      ../../modules/common.nix
       ./hardware.nix
     ]
     ++ lib.optional (lib.pathExists ../../modules/floofbox/wireguard.nix) ../../modules/floofbox/wireguard.nix;
