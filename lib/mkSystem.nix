@@ -11,6 +11,9 @@
   graphical ? true,
 }: let
   machine = ../hosts/${name}/configuration.nix;
+  userConfig = if darwin
+    then ../users/noel/darwin.nix
+    else ../users/noel;
 
   home-manager =
     if darwin
@@ -38,7 +41,7 @@ in
         machine
 
         # Defines the `noel` user
-        ../users/noel
+        userConfig
 
         # Bring in `home-manager`
         home-manager
