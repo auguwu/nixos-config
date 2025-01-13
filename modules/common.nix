@@ -85,7 +85,7 @@
   # systems are near identical on how they're configured.
 
   # disable pulseaudio
-  hardware.pulseaudio.enable = false;
+  services.pulseaudio.enable = false;
 
   # sound (PipeWire)
   security.rtkit.enable = true;

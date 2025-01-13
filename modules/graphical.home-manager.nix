@@ -80,8 +80,8 @@
         version = "latest";
         pname = "vscode-insiders";
         src = builtins.fetchTarball {
-          sha256 = "sha256:1wl5fz5zb1llnhv63fd58dlrh39kvwb7xjpfpqgchwv6r3sr9a0i";
-          url = "https://vscode.download.prss.microsoft.com/dbazure/download/insider/d7c7d5bd66efeaebded9fada08500da3816d80cf/code-insider-x64-1730127569.tar.gz";
+          sha256 = "sha256:0kd30ydwn1bkaf5jmwwy5rb83jrpnd48saahacg0acn57100x1h7";
+          url = "https://vscode.download.prss.microsoft.com/dbazure/download/insider/f80816ab8e21c65ed7f1f7e08ccdbffae63610c6/code-insider-x64-1736506030.tar.gz";
         };
       });
 
@@ -204,6 +204,7 @@
       "editor.detectIndentation" = false;
       "editor.largeFileOptimizations" = false;
       "editor.semanticHighlighting.enabled" = false;
+      "editor.stickyScroll.enabled" = false;
       "editor.quickSuggestions" = {
         "other" = true;
         "comments" = false;
