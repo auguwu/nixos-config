@@ -36,7 +36,6 @@
     #   url = "github:Noelware/nixpkgs-noelware";
     #   inputs = {
     #     nixpkgs.follows = "nixpkgs";
-    #     systems.follows = "systems";
     #   };
     # };
 

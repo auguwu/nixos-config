@@ -1,4 +1,8 @@
-{pkgs, ...}: {
+{
+  pkgs,
+  machine,
+  ...
+}: {
   programs.alacritty = {
     enable = true;
     settings = {
@@ -66,7 +70,7 @@
   };
 
   programs.vscode = {
-    enable = true;
+    enable = machine != "miki";
     package =
       (pkgs.vscode.override {
         isInsiders = true;

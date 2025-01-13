@@ -11,7 +11,8 @@
   graphical ? true,
 }: let
   machine = ../hosts/${name}/configuration.nix;
-  userConfig = if darwin
+  userConfig =
+    if darwin
     then ../users/noel/darwin.nix
     else ../users/noel;
 
