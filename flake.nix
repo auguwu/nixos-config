@@ -82,7 +82,7 @@
       kotoha = mkSystem "kotoha" {
         system = "x86_64-linux";
         modules = [
-          hardware.nixosModules.framework-13-7040-amd
+          # hardware.nixosModules.framework-13-7040-amd
         ];
       };
     };
