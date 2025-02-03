@@ -32,32 +32,29 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # noelware = {
-    #   url = "github:Noelware/nixpkgs-noelware";
-    #   inputs = {
-    #     nixpkgs.follows = "nixpkgs";
-    #   };
-    # };
+    noelware = {
+      url = "github:Noelware/nixpkgs-noelware";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
-    # noel = {
-    #   url = "github:auguwu/nixpkgs-overlay";
-    #   inputs = {
-    #     nixpkgs.follows = "nixpkgs";
-    #     systems.follows = "systems";
-    #   };
-    # };
+    noel = {
+      url = "github:auguwu/nixpkgs-overlay";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = {
     nixpkgs,
     systems,
     hardware,
+    noelware,
+    noel,
     ...
   } @ inputs: let
     eachSystem = nixpkgs.lib.genAttrs (import systems);
     overlays = [
-      # noelware.overlays.default
-      # noel.overlays.default
+      noelware.overlays.default
+      noel.overlays.default
     ];
 
     mkSystem = import ./lib/mkSystem.nix {

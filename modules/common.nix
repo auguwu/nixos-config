@@ -144,7 +144,6 @@
     wireguard-tools
     postgresql_16
     minio-client
-    clang-tools
     pkg-config
     libarchive
     hyfetch
@@ -175,8 +174,14 @@
     jq
     uv
 
-    clang_17
+    # C++/Protobuf tools
+    clang-tools_18
+    clang_18
     protobuf
+
+    # Bazel
+    bazel_7
+    bazel-buildtools
 
     # Rust - https://rust-lang.org
     cargo-whatfeatures
@@ -203,8 +208,7 @@
     bun
 
     # noelctl
-    # foxbuild
     # noeldoc
-    # ume
+    ume
   ];
 }

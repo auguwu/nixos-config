@@ -8,17 +8,6 @@
 }: {
   imports =
     [
-      # ../../software/graphical/jetbrains.nix
-      # ../../software/development.nix
-      # ../../software/graphical.nix
-      # ../../software/system.nix
-      # ../../software/gaming.nix
-
-      # ../../modules/bluetooth.nix
-      # ../../modules/windowing.nix
-      # ../../modules/system.nix
-      # ../../modules/sound.nix
-
       ../../modules/virtualisation/libvirt.nix
       ../../modules/virtualisation/docker.nix
       ../../modules/graphical.nix
@@ -59,14 +48,6 @@
       TcpKeepAlive = true;
       KbdInteractiveAuthentication = false;
     };
-  };
-
-  services.postgresql = {
-    enable = true;
-    authentication = pkgs.lib.mkOverride 10 ''
-      #type database  DBuser  auth-method
-      local all       all     trust
-    '';
   };
 
   # graphics configuration

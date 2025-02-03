@@ -113,6 +113,7 @@
         skellock.just
         unifiedjs.vscode-mdx
         mesonbuild.mesonbuild
+        bazelbuild.vscode-bazel
         # auguwu.buf-vscode
         # noelware.noeldoc
         # noelware.provisionerd
@@ -258,7 +259,7 @@
       ];
 
       "security.workspace.trust.untrustedFiles" = "open";
-      "notebook.cellToolbarLocation" = {
+      "notebook.Unable to find PowerShell! Do you have it installed? You can also configure custom installations with the 'powershell.powerShellAdditionalExePaths' setting.cellToolbarLocation" = {
         "juypter-notebook" = "left";
         "default" = "right";
       };
@@ -281,13 +282,8 @@
       };
 
       "nix.enableLanguageServer" = true;
-
-      # use nix store path for nixd
       "nix.serverPath" = "${pkgs.nixd}/bin/nixd";
-
-      # use nix store path for terraform-ls
       "terraform.languageServer.path" = "${pkgs.terraform-ls}/bin/terraform-ls";
-
       "clang-format.executable" = "${pkgs.clang-tools}/bin/clang-format";
 
       "[terraform-vars]"."editor.defaultFormatter" = "hashicorp.terraform";
@@ -295,13 +291,30 @@
       "[toml]"."editor.defaultFormatter" = "tamasfe.even-better-toml";
       "[rust]"."editor.defaultFormatter" = "rust-lang.rust-analyzer";
       "[cpp]"."editor.defaultFormatter" = "xaver.clang-format";
-      "[nix]"."editor.defaultFormatter" = "kamadorueda.alejandra";
       "[c]"."editor.defaultFormatter" = "xaver.clang-format";
+      "[h]"."editor.defaultFormatter" = "xaver.clang-format";
+
+      "[nix]" = {
+        "editor.defaultFormatter" = "kamadorueda.alejandra";
+        "editor.tabSize" = 2;
+      };
 
       "window.zoomLevel" = 0.7;
       "window.titleBarStyle" = "custom";
 
       "terminal.integrated.fontSize" = 16;
+
+      # unfortunately i need powershell to exist
+      # i wish it didn't tho but life is life
+      "powershell.powerShellDefaultVersion" = "nixpkgs";
+      "powershell.powerShellAdditionalExePaths" = {
+        "nixpkgs" = "${pkgs.powershell}/bin/pwsh";
+      };
+
+      "cmake.pinnedCommands" = [
+        "workbench.action.tasks.configureTaskRunner"
+        "workbench.action.tasks.runTask"
+      ];
     };
   };
 }
