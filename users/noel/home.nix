@@ -115,4 +115,27 @@ in {
     enable = true;
     config.theme = "Nord";
   };
+
+  dconf = {
+    enable = machine != "miki";
+    settings = {
+      "org/gnome/desktop/interface" = {
+        color-scheme = "prefer-dark";
+        cursor-theme = "Adwaita";
+        accent-color = "pink";
+        show-battery-percentage = machine == "kotoha";
+      };
+
+      "org/gnome/shell" = {
+        enabled-extensions = [
+          pkgs.gnomeExtensions.dash-to-dock.extensionUuid
+          pkgs.gnomeExtensions.appindicator.extensionUuid
+
+          "docker@stickman_0x00.com"
+          "status-icons@gnome-shell-extensions.gcampax.github.com"
+          "system-monitor@gnome-shell-extensions.gcampax.github.com"
+        ];
+      };
+    };
+  };
 }

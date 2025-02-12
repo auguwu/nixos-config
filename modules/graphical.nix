@@ -2,8 +2,6 @@
   environment.systemPackages = with pkgs; [
     firefox
     termius
-    bitwarden-cli
-    bitwarden
     flameshot
     telegram-desktop
     (discord-canary.override {

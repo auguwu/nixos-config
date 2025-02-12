@@ -96,20 +96,17 @@
 
   services.xserver = {
     xkb.layout = "us";
-    enable = true;
+
+    displayManager.gdm = {
+      enable = true;
+      wayland = true;
+    };
+
+    desktopManager.gnome.enable = true;
   };
-
-  # Enable KDE 6
-  services.displayManager.sddm.enable = true;
-  services.desktopManager.plasma6.enable = true;
-
-  environment.plasma6.excludePackages = with pkgs.kdePackages; [
-    konsole
-  ];
 
   programs.dconf.enable = true;
 
-  # Let's also include the packages that both systems will have!
   programs.nix-ld = {
     enable = true;
     libraries = with pkgs; [
@@ -130,12 +127,15 @@
   };
 
   environment.systemPackages = with pkgs; [
-    kubernetes-helm
     vulkan-tools
     terraform
     minikube
     opentofu
     kubectl
+
+    (wrapHelm kubernetes-helm {
+      plugins = [charted-helm-plugin];
+    })
 
     terraform-ls
     alejandra
@@ -174,6 +174,10 @@
     jq
     uv
 
+    # Zig
+    zls
+    zig
+
     # C++/Protobuf tools
     clang-tools_18
     clang_18
@@ -201,8 +205,7 @@
     nodePackages.typescript # for tsc
     nodePackages.prettier # for prettier
     nodePackages.pnpm # pnpm > *
-    nodejs_20
-    eslint
+    nodejs
 
     # Bun - https://bun.sh
     bun
@@ -210,5 +213,8 @@
     # noelctl
     # noeldoc
     ume
+
+    gnomeExtensions.appindicator
+    gnomeExtensions.dash-to-dock
   ];
 }

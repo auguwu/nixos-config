@@ -90,7 +90,6 @@
         kamadorueda.alejandra
         astro-build.astro-vscode
         llvm-vs-code-extensions.vscode-clangd
-        vadimcn.vscode-lldb
         ms-vscode-remote.remote-containers
         jnoortheen.nix-ide
         rust-lang.rust-analyzer
@@ -109,7 +108,6 @@
         redhat.vscode-yaml
         xaver.clang-format
         biomejs.biome
-        vadimcn.vscode-lldb
         skellock.just
         unifiedjs.vscode-mdx
         mesonbuild.mesonbuild
@@ -117,7 +115,6 @@
         # auguwu.buf-vscode
         # noelware.noeldoc
         # noelware.provisionerd
-        # noelware.foxbuild
       ]
       ++ pkgs.vscode-utils.extensionsFromVscodeMarketplace [
         {
@@ -199,7 +196,7 @@
       "editor.formatOnSave" = true;
       "editor.formatOnPaste" = true;
       "editor.bracketPairColorization.enabled" = false;
-      "editor.fontFamily" = "'Geist Mono', Consolas, 'Courier New', monospace";
+      "editor.fontFamily" = "'JetBrains Mono', Consolas, 'Courier New', monospace";
       "editor.fontSize" = 17;
       "editor.minimap.enabled" = false;
       "editor.detectIndentation" = false;
@@ -211,6 +208,8 @@
         "comments" = false;
         "strings" = false;
       };
+
+      "update.mode" = "off";
 
       "files.trimTrailingWhitespace" = true;
       "files.trimFinalNewlines" = true;
@@ -286,11 +285,15 @@
       "terraform.languageServer.path" = "${pkgs.terraform-ls}/bin/terraform-ls";
       "clang-format.executable" = "${pkgs.clang-tools}/bin/clang-format";
 
+      "zig.zls.enabled" = "on";
+      "zig.zls.path" = "${pkgs.zls}/bin/zls";
+
       "[terraform-vars]"."editor.defaultFormatter" = "hashicorp.terraform";
       "[terraform]"."editor.defaultFormatter" = "hashicorp.terraform";
       "[toml]"."editor.defaultFormatter" = "tamasfe.even-better-toml";
       "[rust]"."editor.defaultFormatter" = "rust-lang.rust-analyzer";
       "[cpp]"."editor.defaultFormatter" = "xaver.clang-format";
+      "[zig]"."editor.defaultFormatter" = "ziglang.vscode-zig";
       "[c]"."editor.defaultFormatter" = "xaver.clang-format";
       "[h]"."editor.defaultFormatter" = "xaver.clang-format";
 
