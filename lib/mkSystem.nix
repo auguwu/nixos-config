@@ -50,6 +50,7 @@ in
         # Configure home-manager
         {
           home-manager = {
+            backupFileExtension = "backup";
             useGlobalPkgs = true;
             useUserPackages = true;
             users.noel = import ../users/noel/home.nix;

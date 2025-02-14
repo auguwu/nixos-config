@@ -3,8 +3,21 @@
   machine,
   ...
 }: {
+  programs.ghostty = {
+    # on macOS, ghostty is currently broken!
+    enable = machine != "miki";
+    installBatSyntax = true;
+    enableZshIntegration = true;
+    settings = {
+      font-family = "JetBrains Mono";
+      theme = "rose-pine";
+      font-size = 14;
+    };
+  };
+
+  # view above; move to ghostty once it is not broken
   programs.alacritty = {
-    enable = true;
+    enable = machine == "miki";
     settings = {
       terminal.shell = "${pkgs.zsh}/bin/zsh";
 
