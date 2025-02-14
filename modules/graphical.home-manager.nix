@@ -82,6 +82,63 @@
     };
   };
 
+  programs.hyfetch = {
+    enable = true;
+    settings = {
+      preset = "transgender";
+      mode = "rgb";
+      color_align = {
+        mode = "horizontal";
+      };
+    };
+  };
+
+  # programs.zed-editor = {
+  #   enable = true;
+  #   extraPackages = with pkgs; [
+  #     nil
+  #     terraform-ls
+  #     clang-tools
+  #     zls
+  #   ];
+
+  #   userSettings = {
+  #     vim_mode = false;
+  #     format_on_save = "on";
+  #     tab_size = 4;
+
+  #     buffer_font_size = 19.6;
+  #     buffer_font_family = "JetBrains Mono";
+
+  #     current_line_highlight = "none";
+
+  #     cursor_blink = true;
+
+  #     ui_font_size = 16;
+  #     ui_font_family = "Inter";
+
+  #     theme = {
+  #       mode = "system";
+  #       light = "Vitesse Light";
+  #       dark = "Vitesse Dark";
+  #     };
+
+  #     terminal = {
+  #       font_family = "JetBrains Mono";
+  #       font_size = 17;
+  #     };
+
+  #     features = {
+  #       copilot = false;
+  #     };
+
+  #     telemetry = {
+  #       metrics = false;
+  #       diagnostics = true;
+  #     };
+  #   };
+  # };
+
   programs.vscode = {
     enable = machine != "miki";
     package =
@@ -271,7 +328,7 @@
       ];
 
       "security.workspace.trust.untrustedFiles" = "open";
-      "notebook.Unable to find PowerShell! Do you have it installed? You can also configure custom installations with the 'powershell.powerShellAdditionalExePaths' setting.cellToolbarLocation" = {
+      "notebook.cellToolbarLocation" = {
         "juypter-notebook" = "left";
         "default" = "right";
       };

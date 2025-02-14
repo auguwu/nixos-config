@@ -119,6 +119,18 @@ in {
   dconf = {
     enable = machine != "miki";
     settings = {
+      "org/gnome/desktop/screensaver" = {
+        picture-uri = if machine == "floofbox"
+          then "file://${../../wallpapers/furry.jpg}"
+          else "file://${../../wallpapers/zzz.png}";
+      };
+
+      "org/gnome/desktop/background" = {
+        picture-uri = if machine == "floofbox"
+          then "file://${../../wallpapers/furry.jpg}"
+          else "file://${../../wallpapers/zzz.png}";
+      };
+
       "org/gnome/desktop/interface" = {
         color-scheme = "prefer-dark";
         cursor-theme = "Adwaita";

@@ -146,7 +146,6 @@
     minio-client
     pkg-config
     libarchive
-    hyfetch
     pciutils
     tcpdump
     ripgrep
@@ -216,5 +215,6 @@
 
     gnomeExtensions.appindicator
     gnomeExtensions.dash-to-dock
+    adwaita-icon-theme
   ];
 }
