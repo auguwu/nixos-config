@@ -211,7 +211,7 @@
 
     # noelctl
     # noeldoc
-    ume
+    # ume
 
     gnomeExtensions.appindicator
     gnomeExtensions.dash-to-dock

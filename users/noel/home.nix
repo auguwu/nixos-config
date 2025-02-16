@@ -9,6 +9,33 @@
     if pkgs.stdenv.isDarwin
     then "/Users/noel"
     else "/home/noel";
+
+  laptop-dconf = {
+    "org/gnome/desktop/peripherals/touchpad" = {
+      two-finger-scrolling-enabled = true;
+    };
+
+    "org/gnome/desktop/peripherals/mouse" = {
+      natural-scroll = true;
+    };
+
+    "org/gnome/shell" = {
+      last-selected-power-profile = "performance";
+    };
+  };
+
+  buildAutoStartFiles = applications: builtins.listToAttrs(
+    lib.map (pkg: {
+      name = ".config/autostart/${pkg.pname}.desktop";
+      value = if pkg ? desktopItem
+        then {
+          text = pkg.desktopItem.text;
+        }
+        else {
+          source = "${pkg}/share/applications/${pkg.pname}.desktop";
+        };
+    }) applications
+  );
 in {
   imports = lib.flatten (lib.optional graphical ../../modules/graphical.home-manager.nix);
   home.sessionVariables = {
@@ -24,7 +51,14 @@ in {
     ".wallpapers/furry.jpg".source = ../../wallpapers/furry.jpg;
     ".scripts/rebuild".source = ../../hosts/${machine}/rebuild.sh;
     ".icons/noel.png".source = ../../icons/noel.png;
-  };
+  } // (buildAutoStartFiles (with pkgs; [
+    (discord-canary.override {
+      withVencord = true;
+    })
+
+    telegram-desktop
+    slack
+  ]));
 
   home.shellAliases = {
     grep = "rg";
@@ -147,7 +181,30 @@ in {
           "status-icons@gnome-shell-extensions.gcampax.github.com"
           "system-monitor@gnome-shell-extensions.gcampax.github.com"
         ];
+
+        favorite-apps = [
+          "firefox.desktop"
+          "discord-canary.desktop"
+          "code-insiders.desktop"
+          "spotify.desktop"
+          "org.gnome.Nautilus.desktop"
+          "org.telegram.desktop.desktop"
+          "slack.desktop"
+          "com.mitchellh.ghostty.desktop"
+          "thunderbird.desktop"
+        ];
       };
-    };
+
+      "org/gnome/shell/extensions/system-monitor" = {
+        show-download = false;
+        show-upload = false;
+      };
+
+      "org/gnome/settings-daemon/plugins/color" = {
+        night-light-schedule-automatic = false;
+        night-light-enabled = true;
+        night-light-temperature = 3500;
+      };
+    } // laptop-dconf;
   };
 }
