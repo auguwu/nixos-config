@@ -141,6 +141,7 @@
     alejandra
     nixd
 
+    nix-output-monitor
     wireguard-tools
     postgresql_16
     minio-client

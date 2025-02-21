@@ -150,19 +150,18 @@
         version = "latest";
         pname = "vscode-insiders";
         src = builtins.fetchTarball {
-          sha256 = "sha256:0kd30ydwn1bkaf5jmwwy5rb83jrpnd48saahacg0acn57100x1h7";
-          url = "https://vscode.download.prss.microsoft.com/dbazure/download/insider/f80816ab8e21c65ed7f1f7e08ccdbffae63610c6/code-insider-x64-1736506030.tar.gz";
+          sha256 = "sha256:01avb628is4vpmvydqann9mvkqfhr1n42k5w0a8qblz7ciq8kkas";
+          url = "https://vscode.download.prss.microsoft.com/dbazure/download/insider/233d086d5a613a1e9f016986f5ff056c17322c31/code-insider-x64-1740115451.tar.gz";
         };
       });
 
     extensions = with pkgs.vscode-extensions;
       [
-        kamadorueda.alejandra
         astro-build.astro-vscode
         llvm-vs-code-extensions.vscode-clangd
         ms-vscode-remote.remote-containers
         jnoortheen.nix-ide
-        rust-lang.rust-analyzer
+        #rust-lang.rust-analyzer
         bradlc.vscode-tailwindcss
         dbaeumer.vscode-eslint
         esbenp.prettier-vscode
@@ -180,8 +179,8 @@
         biomejs.biome
         skellock.just
         unifiedjs.vscode-mdx
-        mesonbuild.mesonbuild
         bazelbuild.vscode-bazel
+        ziglang.vscode-zig
         # auguwu.buf-vscode
         # noelware.noeldoc
         # noelware.provisionerd
@@ -279,7 +278,7 @@
         "strings" = false;
       };
 
-      "update.mode" = "off";
+      "update.mode" = "none";
 
       "files.trimTrailingWhitespace" = true;
       "files.trimFinalNewlines" = true;
@@ -352,6 +351,10 @@
 
       "nix.enableLanguageServer" = true;
       "nix.serverPath" = "${pkgs.nixd}/bin/nixd";
+      "nix.serverSettings".nixd = {
+        formatting.command = ["nix" "fmt" "--" "--"];
+      };
+
       "terraform.languageServer.path" = "${pkgs.terraform-ls}/bin/terraform-ls";
       "clang-format.executable" = "${pkgs.clang-tools}/bin/clang-format";
 

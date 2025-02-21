@@ -24,18 +24,58 @@
     };
   };
 
-  buildAutoStartFiles = applications: builtins.listToAttrs(
-    lib.map (pkg: {
-      name = ".config/autostart/${pkg.pname}.desktop";
-      value = if pkg ? desktopItem
-        then {
-          text = pkg.desktopItem.text;
-        }
-        else {
-          source = "${pkg}/share/applications/${pkg.pname}.desktop";
-        };
-    }) applications
-  );
+  # buildAutoStartFilesV1 = applications: builtins.listToAttrs(
+  #   lib.map (pkg: {
+  #     name = ".config/autostart/${pkg.pname}.desktop";
+  #     value = if pkg ? desktopItem
+  #       then {
+  #         text = pkg.desktopItem.text;
+  #       }
+  #       else {
+  #         source = "${pkg}/share/applications/${pkg.pname}.desktop";
+  #       };
+  #   }) applications
+  # );
+
+  # based off
+  # https://github.com/nix-community/home-manager/issues/3447#issuecomment-2213029759
+  buildAutoStartFiles = applications: let
+    inherit (lib) map attrsets;
+  in
+    builtins.listToAttrs (map (pkg: {
+        name = ".config/autostart/${pkg.pname}.desktop";
+        value =
+          if pkg ? desktopItem
+          then {
+            # application has a `desktopItem` entry; we don't know
+            # if it was made with `makeDesktopEntry`, which has a `text`
+            # attribute of the content, so we'll assume that it's there.
+            text = pkg.desktopItem.text;
+          }
+          else {
+            # otherwise, we'll try to find a .desktop item in the source
+            # tree of the derivation of `pkg`.
+            source = with builtins; let
+              appsPath = "${pkg}/share/applications";
+              filterFiles = contents:
+                attrsets.filterAttrs (
+                  _: ty:
+                    elem ty ["regular" "symlink"]
+                )
+                contents;
+            in (
+              if (pathExists "${appsPath}/${pkg.pname}.desktop")
+              then "${appsPath}/${pkg.pname}.desktop"
+              else
+                (
+                  if pathExists appsPath
+                  then "${appsPath}/${head (attrNames (filterFiles (readDir appsPath)))}"
+                  else throw "unable to find `.desktop` entry for application [${pkg.pname}]"
+                )
+            );
+          };
+      })
+      applications);
 in {
   imports = lib.flatten (lib.optional graphical ../../modules/graphical.home-manager.nix);
   home.sessionVariables = {
@@ -46,19 +86,21 @@ in {
   home.homeDirectory = homedir;
   home.stateVersion = "23.05";
   home.username = "noel";
-  home.file = {
-    ".scripts/actions-delete".source = ../../scripts/actions-delete;
-    ".wallpapers/furry.jpg".source = ../../wallpapers/furry.jpg;
-    ".scripts/rebuild".source = ../../hosts/${machine}/rebuild.sh;
-    ".icons/noel.png".source = ../../icons/noel.png;
-  } // (buildAutoStartFiles (with pkgs; [
-    (discord-canary.override {
-      withVencord = true;
-    })
+  home.file =
+    {
+      ".scripts/actions-delete".source = ../../scripts/actions-delete;
+      ".wallpapers/furry.jpg".source = ../../wallpapers/furry.jpg;
+      ".scripts/rebuild".source = ../../hosts/${machine}/rebuild.sh;
+      ".icons/noel.png".source = ../../icons/noel.png;
+    }
+    // (buildAutoStartFiles (with pkgs; [
+      (discord-canary.override {
+        withVencord = true;
+      })
 
-    telegram-desktop
-    slack
-  ]));
+      telegram-desktop
+      slack
+    ]));
 
   home.shellAliases = {
     grep = "rg";
@@ -152,59 +194,63 @@ in {
 
   dconf = {
     enable = machine != "miki";
-    settings = {
-      "org/gnome/desktop/screensaver" = {
-        picture-uri = if machine == "floofbox"
-          then "file://${../../wallpapers/furry.jpg}"
-          else "file://${../../wallpapers/zzz.png}";
-      };
+    settings =
+      {
+        "org/gnome/desktop/screensaver" = {
+          picture-uri =
+            if machine == "floofbox"
+            then "file://${../../wallpapers/furry.jpg}"
+            else "file://${../../wallpapers/zzz.png}";
+        };
 
-      "org/gnome/desktop/background" = {
-        picture-uri = if machine == "floofbox"
-          then "file://${../../wallpapers/furry.jpg}"
-          else "file://${../../wallpapers/zzz.png}";
-      };
+        "org/gnome/desktop/background" = {
+          picture-uri =
+            if machine == "floofbox"
+            then "file://${../../wallpapers/furry.jpg}"
+            else "file://${../../wallpapers/zzz.png}";
+        };
 
-      "org/gnome/desktop/interface" = {
-        color-scheme = "prefer-dark";
-        cursor-theme = "Adwaita";
-        accent-color = "pink";
-        show-battery-percentage = machine == "kotoha";
-      };
+        "org/gnome/desktop/interface" = {
+          color-scheme = "prefer-dark";
+          cursor-theme = "Adwaita";
+          accent-color = "pink";
+          show-battery-percentage = machine == "kotoha";
+        };
 
-      "org/gnome/shell" = {
-        enabled-extensions = [
-          pkgs.gnomeExtensions.dash-to-dock.extensionUuid
-          pkgs.gnomeExtensions.appindicator.extensionUuid
+        "org/gnome/shell" = {
+          enabled-extensions = [
+            pkgs.gnomeExtensions.dash-to-dock.extensionUuid
+            pkgs.gnomeExtensions.appindicator.extensionUuid
 
-          "docker@stickman_0x00.com"
-          "status-icons@gnome-shell-extensions.gcampax.github.com"
-          "system-monitor@gnome-shell-extensions.gcampax.github.com"
-        ];
+            "docker@stickman_0x00.com"
+            "status-icons@gnome-shell-extensions.gcampax.github.com"
+            "system-monitor@gnome-shell-extensions.gcampax.github.com"
+          ];
 
-        favorite-apps = [
-          "firefox.desktop"
-          "discord-canary.desktop"
-          "code-insiders.desktop"
-          "spotify.desktop"
-          "org.gnome.Nautilus.desktop"
-          "org.telegram.desktop.desktop"
-          "slack.desktop"
-          "com.mitchellh.ghostty.desktop"
-          "thunderbird.desktop"
-        ];
-      };
+          favorite-apps = [
+            "firefox.desktop"
+            "discord-canary.desktop"
+            "code-insiders.desktop"
+            "spotify.desktop"
+            "org.gnome.Nautilus.desktop"
+            "org.telegram.desktop.desktop"
+            "slack.desktop"
+            "com.mitchellh.ghostty.desktop"
+            "thunderbird.desktop"
+          ];
+        };
 
-      "org/gnome/shell/extensions/system-monitor" = {
-        show-download = false;
-        show-upload = false;
-      };
+        "org/gnome/shell/extensions/system-monitor" = {
+          show-download = false;
+          show-upload = false;
+        };
 
-      "org/gnome/settings-daemon/plugins/color" = {
-        night-light-schedule-automatic = false;
-        night-light-enabled = true;
-        night-light-temperature = 3500;
-      };
-    } // laptop-dconf;
+        "org/gnome/settings-daemon/plugins/color" = {
+          night-light-schedule-automatic = false;
+          night-light-enabled = true;
+          night-light-temperature = 3500;
+        };
+      }
+      // laptop-dconf;
   };
 }
