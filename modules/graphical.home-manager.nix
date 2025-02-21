@@ -371,11 +371,15 @@
       "[h]"."editor.defaultFormatter" = "xaver.clang-format";
 
       "[nix]" = {
-        "editor.defaultFormatter" = "kamadorueda.alejandra";
+        "editor.defaultFormatter" = "jnoortheen.nix-ide";
         "editor.tabSize" = 2;
       };
 
-      "window.zoomLevel" = 0.7;
+      "window.zoomLevel" =
+        if machine == "kotoha"
+        then 0.6
+        else 0.7;
+
       "window.titleBarStyle" = "custom";
 
       "terminal.integrated.fontSize" = 16;
