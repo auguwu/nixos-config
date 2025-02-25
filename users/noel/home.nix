@@ -10,33 +10,6 @@
     then "/Users/noel"
     else "/home/noel";
 
-  laptop-dconf = {
-    "org/gnome/desktop/peripherals/touchpad" = {
-      two-finger-scrolling-enabled = true;
-    };
-
-    "org/gnome/desktop/peripherals/mouse" = {
-      natural-scroll = true;
-    };
-
-    "org/gnome/shell" = {
-      last-selected-power-profile = "performance";
-    };
-  };
-
-  # buildAutoStartFilesV1 = applications: builtins.listToAttrs(
-  #   lib.map (pkg: {
-  #     name = ".config/autostart/${pkg.pname}.desktop";
-  #     value = if pkg ? desktopItem
-  #       then {
-  #         text = pkg.desktopItem.text;
-  #       }
-  #       else {
-  #         source = "${pkg}/share/applications/${pkg.pname}.desktop";
-  #       };
-  #   }) applications
-  # );
-
   # based off
   # https://github.com/nix-community/home-manager/issues/3447#issuecomment-2213029759
   buildAutoStartFiles = applications: let
@@ -194,63 +167,73 @@ in {
 
   dconf = {
     enable = machine != "miki";
-    settings =
-      {
-        "org/gnome/desktop/screensaver" = {
-          picture-uri =
-            if machine == "floofbox"
-            then "file://${../../wallpapers/furry.jpg}"
-            else "file://${../../wallpapers/zzz.png}";
-        };
+    settings = {
+      "org/gnome/desktop/screensaver" = {
+        picture-uri =
+          if machine == "floofbox"
+          then "file://${../../wallpapers/furry.jpg}"
+          else "file://${../../wallpapers/zzz.png}";
+      };
 
-        "org/gnome/desktop/background" = {
-          picture-uri =
-            if machine == "floofbox"
-            then "file://${../../wallpapers/furry.jpg}"
-            else "file://${../../wallpapers/zzz.png}";
-        };
+      "org/gnome/desktop/background" = {
+        picture-uri =
+          if machine == "floofbox"
+          then "file://${../../wallpapers/furry.jpg}"
+          else "file://${../../wallpapers/zzz.png}";
+      };
 
-        "org/gnome/desktop/interface" = {
-          color-scheme = "prefer-dark";
-          cursor-theme = "Adwaita";
-          accent-color = "pink";
-          show-battery-percentage = machine == "kotoha";
-        };
+      "org/gnome/desktop/interface" = {
+        color-scheme = "prefer-dark";
+        cursor-theme = "Adwaita";
+        accent-color = "pink";
+        show-battery-percentage = machine == "kotoha";
+      };
 
-        "org/gnome/shell" = {
-          enabled-extensions = [
-            pkgs.gnomeExtensions.dash-to-dock.extensionUuid
-            pkgs.gnomeExtensions.appindicator.extensionUuid
+      "org/gnome/desktop/peripherals/mouse" = {
+        natural-scroll = machine == "kotoha";
+      };
 
-            "docker@stickman_0x00.com"
-            "status-icons@gnome-shell-extensions.gcampax.github.com"
-            "system-monitor@gnome-shell-extensions.gcampax.github.com"
-          ];
+      "org/gnome/desktop/peripherals/touchpad" = {
+        two-finger-scrolling-enabled = machine == "kotoha";
+      };
 
-          favorite-apps = [
-            "firefox.desktop"
-            "discord-canary.desktop"
-            "code-insiders.desktop"
-            "spotify.desktop"
-            "org.gnome.Nautilus.desktop"
-            "org.telegram.desktop.desktop"
-            "slack.desktop"
-            "com.mitchellh.ghostty.desktop"
-            "thunderbird.desktop"
-          ];
-        };
+      "org/gnome/shell" = {
+        last-selected-power-profile = "performance";
+      };
 
-        "org/gnome/shell/extensions/system-monitor" = {
-          show-download = false;
-          show-upload = false;
-        };
+      "org/gnome/shell" = {
+        enabled-extensions = [
+          pkgs.gnomeExtensions.dash-to-dock.extensionUuid
+          pkgs.gnomeExtensions.appindicator.extensionUuid
 
-        "org/gnome/settings-daemon/plugins/color" = {
-          night-light-schedule-automatic = false;
-          night-light-enabled = true;
-          night-light-temperature = 3500;
-        };
-      }
-      // laptop-dconf;
+          "docker@stickman_0x00.com"
+          "status-icons@gnome-shell-extensions.gcampax.github.com"
+          "system-monitor@gnome-shell-extensions.gcampax.github.com"
+        ];
+
+        favorite-apps = [
+          "firefox.desktop"
+          "discord-canary.desktop"
+          "code-insiders.desktop"
+          "spotify.desktop"
+          "org.gnome.Nautilus.desktop"
+          "org.telegram.desktop.desktop"
+          "slack.desktop"
+          "com.mitchellh.ghostty.desktop"
+          "thunderbird.desktop"
+        ];
+      };
+
+      "org/gnome/shell/extensions/system-monitor" = {
+        show-download = false;
+        show-upload = false;
+      };
+
+      "org/gnome/settings-daemon/plugins/color" = {
+        night-light-schedule-automatic = false;
+        night-light-enabled = true;
+        night-light-temperature = 3500;
+      };
+    };
   };
 }

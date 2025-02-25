@@ -162,7 +162,7 @@
           llvm-vs-code-extensions.vscode-clangd
           ms-vscode-remote.remote-containers
           jnoortheen.nix-ide
-          #rust-lang.rust-analyzer
+          rust-lang.rust-analyzer
           bradlc.vscode-tailwindcss
           dbaeumer.vscode-eslint
           esbenp.prettier-vscode
@@ -255,7 +255,7 @@
         "telemetry.telemetryLevel" = "off";
 
         "workbench.colorTheme" = "Vitesse Dark";
-        "workbench.iconTheme" = "eq-material-theme-icons-ocean";
+        "workbench.iconTheme" = "ayu";
         "workbench.startupEditor" = "none";
 
         "editor.tabSize" = 4;
