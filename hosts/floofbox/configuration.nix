@@ -54,7 +54,7 @@
   hardware.graphics = {
     enable = true;
     enable32Bit = true;
-    extraPackages = with pkgs; [mesa.drivers];
+    extraPackages = with pkgs; [mesa];
   };
 
   # make sure that Discord voice works and this is I know how it would work

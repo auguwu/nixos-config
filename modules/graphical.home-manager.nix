@@ -147,11 +147,11 @@
       })
       .overrideAttrs (oldAttrs: {
         buildInputs = oldAttrs.buildInputs ++ [pkgs.krb5];
-        version = "latest";
+        version = "1.99.0-insiders";
         pname = "vscode-insiders";
         src = builtins.fetchTarball {
-          sha256 = "sha256:01avb628is4vpmvydqann9mvkqfhr1n42k5w0a8qblz7ciq8kkas";
-          url = "https://vscode.download.prss.microsoft.com/dbazure/download/insider/233d086d5a613a1e9f016986f5ff056c17322c31/code-insider-x64-1740115451.tar.gz";
+          sha256 = "sha256:1vad4rby7r4nfr9xqny49vavmrbh908h0n1f7bhjhq2igs7x325y";
+          url = "https://vscode.download.prss.microsoft.com/dbazure/download/insider/ff52a0da2eeb3d4c590a85cf14ca13a9d6c1b2cd/code-insider-x64-1743053042.tar.gz";
         };
       });
 
@@ -173,27 +173,20 @@
           golang.go
           hashicorp.terraform
           ms-kubernetes-tools.vscode-kubernetes-tools
-          pkief.material-icon-theme
           ms-vscode-remote.remote-ssh
           redhat.vscode-yaml
           xaver.clang-format
-          biomejs.biome
           skellock.just
           unifiedjs.vscode-mdx
           bazelbuild.vscode-bazel
-          ziglang.vscode-zig
+          wakatime.vscode-wakatime
+          ms-vscode.powershell
+          catppuccin.catppuccin-vsc-icons
+
           # auguwu.buf-vscode
           # noelware.noeldoc
-          # noelware.provisionerd
         ]
         ++ pkgs.vscode-utils.extensionsFromVscodeMarketplace [
-          {
-            name = "discord-vscode";
-            publisher = "icrawl";
-            version = "5.8.0";
-            sha256 = "sha256-IU/looiu6tluAp8u6MeSNCd7B8SSMZ6CEZ64mMsTNmU=";
-          }
-
           {
             name = "hcl";
             publisher = "hashicorp";
@@ -223,13 +216,6 @@
           }
 
           {
-            name = "remote-explorer";
-            publisher = "ms-vscode";
-            version = "0.5.2024081309";
-            sha256 = "sha256-YExf9Yyo7Zp0Nfoap8Vvtas11W9Czslt55X9lb/Ri3s=";
-          }
-
-          {
             name = "volar";
             publisher = "Vue";
             version = "2.1.8";
@@ -249,13 +235,20 @@
             version = "0.0.5";
             sha256 = "sha256-VJBvR9pM0NPYi/RUoVQcL1tt2PZCKohwX8Dd1nz0UGY=";
           }
+
+          {
+            name = "vscode-systemd-support";
+            publisher = "hangxingliu";
+            version = "3.0.0";
+            sha256 = "sha256-K1fXE0AxkWdHsQC3uUFcJecJqB5PpJVzVdtfPSw4+eg=";
+          }
         ];
 
       userSettings = {
         "telemetry.telemetryLevel" = "off";
 
         "workbench.colorTheme" = "Vitesse Dark";
-        "workbench.iconTheme" = "ayu";
+        "workbench.iconTheme" = "catppuccin-latte";
         "workbench.startupEditor" = "none";
 
         "editor.tabSize" = 4;
@@ -298,11 +291,6 @@
         "diffEditor.ignoreTrimWhitespace" = false;
 
         "typescript.updateImportsOnFileMove.enabled" = "never";
-
-        "discord.detailsEditing" = "Editing file {file_name}";
-        "discord.detailsIdling" = "Idling... zzz~";
-        "discord.largeImageIdling" = "Idling... zzz~";
-        "discord.lowerDetailsNoWorkspaceFound" = "(no workspace?!)";
 
         "terminal.integrated.defaultProfile.windows" = "PowerShell";
         "terminal.integrated.tabs.enabled" = true;
@@ -356,18 +344,13 @@
           formatting.command = ["nix" "fmt" "--" "--"];
         };
 
-        "terraform.languageServer.path" = "${pkgs.terraform-ls}/bin/terraform-ls";
         "clang-format.executable" = "${pkgs.clang-tools}/bin/clang-format";
-
-        "zig.zls.enabled" = "on";
-        "zig.zls.path" = "${pkgs.zls}/bin/zls";
 
         "[terraform-vars]"."editor.defaultFormatter" = "hashicorp.terraform";
         "[terraform]"."editor.defaultFormatter" = "hashicorp.terraform";
         "[toml]"."editor.defaultFormatter" = "tamasfe.even-better-toml";
         "[rust]"."editor.defaultFormatter" = "rust-lang.rust-analyzer";
         "[cpp]"."editor.defaultFormatter" = "xaver.clang-format";
-        "[zig]"."editor.defaultFormatter" = "ziglang.vscode-zig";
         "[c]"."editor.defaultFormatter" = "xaver.clang-format";
         "[h]"."editor.defaultFormatter" = "xaver.clang-format";
 
@@ -391,11 +374,6 @@
         "powershell.powerShellAdditionalExePaths" = {
           "nixpkgs" = "${pkgs.powershell}/bin/pwsh";
         };
-
-        "cmake.pinnedCommands" = [
-          "workbench.action.tasks.configureTaskRunner"
-          "workbench.action.tasks.runTask"
-        ];
       };
     };
   };

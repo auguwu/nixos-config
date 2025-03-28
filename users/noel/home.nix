@@ -72,7 +72,7 @@ in {
       })
 
       telegram-desktop
-      slack
+      spotify
     ]));
 
   home.shellAliases = {

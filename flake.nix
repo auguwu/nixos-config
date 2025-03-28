@@ -18,7 +18,7 @@
   };
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     hardware.url = "github:NixOS/nixos-hardware";
     systems.url = "github:nix-systems/default";
 
@@ -53,8 +53,8 @@
   } @ inputs: let
     eachSystem = nixpkgs.lib.genAttrs (import systems);
     overlays = [
-      noelware.overlays.default
-      noel.overlays.default
+      (import noelware)
+      (import noel)
     ];
 
     mkSystem = import ./lib/mkSystem.nix {
