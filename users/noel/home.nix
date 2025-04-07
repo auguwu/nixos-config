@@ -136,6 +136,7 @@ in {
       pull.rebase = true; # i am getting better at this :>
       safe.directory = "*"; # i don't care, even though i probably should
       push.autoSetupRemote = true;
+      commit.gpgsign = true;
       includeIf."gitdir:/Workspaces/Noelware/Internal/".path = "/Workspaces/Noelware/.gitconfig";
       includeIf."gitdir:/Workspaces/Noel/Internal/".path = "/Workspaces/Noel/.gitconfig";
     };

@@ -147,11 +147,11 @@
       })
       .overrideAttrs (oldAttrs: {
         buildInputs = oldAttrs.buildInputs ++ [pkgs.krb5];
-        version = "1.99.0-insiders";
+        version = "1.100.0-insiders";
         pname = "vscode-insiders";
         src = builtins.fetchTarball {
-          sha256 = "sha256:1vad4rby7r4nfr9xqny49vavmrbh908h0n1f7bhjhq2igs7x325y";
-          url = "https://vscode.download.prss.microsoft.com/dbazure/download/insider/ff52a0da2eeb3d4c590a85cf14ca13a9d6c1b2cd/code-insider-x64-1743053042.tar.gz";
+          sha256 = "sha256:1qn1smd1831wj0k98iz03vz348y2vzrrgdyq28bivnwkib117qdw";
+          url = "https://vscode.download.prss.microsoft.com/dbazure/download/insider/c7ea9f8f6c08db68cd63dabe8edfc8555904ee42/code-insider-x64-1743744239.tar.gz";
         };
       });
 
