@@ -9,7 +9,6 @@
     gc = {
       automatic = true;
       interval.Day = 7;
-      user = "root";
     };
 
     settings = {
@@ -40,7 +39,6 @@
   };
 
   # service stuff
-  services.nix-daemon.enable = true;
   services.skhd = {
     enable = true;
     package = pkgs.skhd;
