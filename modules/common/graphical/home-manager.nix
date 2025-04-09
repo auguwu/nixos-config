@@ -96,7 +96,7 @@
   programs.zed-editor = {
     enable = true;
     extensions = [
-        # languages
+      # languages
       "nix"
       "toml"
       "sql"
@@ -144,48 +144,51 @@
       ui_font_family = "Inter";
 
       theme = {
-          mode = "system";
-          light = "Vitesse Refined Light";
-          dark = "Vitesse Refined Dark";
+        mode = "system";
+        light = "Vitesse Refined Light";
+        dark = "Vitesse Refined Dark";
       };
 
       terminal = {
-          font_family = "JetBrains Mono";
-          font_size = 17;
+        font_family = "JetBrains Mono";
+        font_size = 17;
       };
 
       features = {
-          copilot = false;
+        copilot = false;
       };
 
       telemetry = {
-          diagnostics = true;
-          metrics = false;
+        diagnostics = true;
+        metrics = false;
       };
 
-      # languages = {
-      #     Nix = {
-      #         formatter = "language_server";
-      #         format_on_save = true;
-      #     };
+      languages = {
+        Nix = {
+          language_servers = ["nil" "!nixd"];
+          format_on_save = "on";
+          tab_size = 2;
+        };
+      };
 
-      #     Rust = {
-      #         formatter = "language_server";
-      #         format_on_save = true;
-      #     };
+      lsp = {
+        nil = {
+          settings = {
+            formatting = {
+              command = ["nix" "fmt" "--" "--"];
+            };
 
-      #     JavaScript = {
-      #         format_on_save = "on";
-      #         formatter.external = {
-      #             command = "${pkgs.nodePackages.prettier}/bin/prettier";
-      #             arguments = ["--stdin-filepath" "{buffer_path}"];
-      #         };
-
-      #         code_actions_on_format = {
-      #             "source.fixAll.eslint" = true;
-      #         };
-      #     };
-      # };
+            nix = {
+              binary = "${pkgs.nixVersions.stable}/bin/nix";
+              maxMemoryMB = 4120; # ~4.1GiB is used for `nix flake show --legacy` for me.
+              flake = {
+                autoArchive = true;
+                autoEvalInputs = true;
+              };
+            };
+          };
+        };
+      };
     };
   };
 
