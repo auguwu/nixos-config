@@ -1,41 +1,13 @@
 {pkgs, ...}: {
-  # Configure time-related stuff
-  time.timeZone = "America/Los_Angeles";
-
-  # Next, configure Nix
-  nix = {
-    package = pkgs.nixVersions.stable;
-    channel.enable = false;
-    gc = {
-      automatic = true;
-      interval.Day = 7;
-    };
-
-    settings = {
-      experimental-features = "nix-command flakes";
-      trusted-users = ["noel"];
-      trusted-substituters = [
-        "https://cache.nixos.org"
-        "https://noel.cachix.org" # TODO: replace with nix.floofy.dev
-        "https://noelware.cachix.org" # TODO: replace with nix.noelware.org
-      ];
-
-      trusted-public-keys = [
-        "noel.cachix.org-1:pQHbMJOB5h5VqYi3RV0Vv0EaeHfxARxgOhE9j013XwQ="
-        "noelware.cachix.org-1:22A8ELRjkqEycSHz+R5A5ReX2jyjU3rftsBmlD6thn0="
-      ];
-
-      substituters = [
-        "https://noel.cachix.org"
-        "https://noelware.cachix.org"
-      ];
-    };
-  };
+  imports = [
+    ../../modules/common/miki.nix
+    ../../modules/common
+  ];
 
   # networking stuff
   networking = {
     hostName = "miki";
-    computerName = "Mac Mini";
+    computerName = "Noel's Mac Mini";
   };
 
   # service stuff
@@ -44,95 +16,13 @@
     package = pkgs.skhd;
   };
 
-  # configure fonts
-  fonts = {
-    packages = with pkgs; [
-      nerd-fonts.jetbrains-mono
-      nerd-fonts.geist-mono
-
-      noto-fonts-cjk-sans
-      noto-fonts-emoji
-      noto-fonts
-
-      jetbrains-mono
-      inter
-    ];
-  };
-
-  # Programs that are :3c
-  programs.gnupg.agent = {
-    enable = true;
-    enableSSHSupport = true;
-  };
-
   environment.systemPackages = with pkgs; [
-    # applications
-    kubernetes-helm
-    opentofu
-    minikube
-    kubectl
-
-    # LSPs
-    terraform-ls
-    alejandra
-    nil
-
     # graphical
     telegram-desktop
     flameshot
     spotify
     slack
-
-    # others
-    clang-tools
-    fastfetch
-    ripgrep
-    direnv
-    hclfmt
-    gnutar
-    cmake
-    ninja
-    htop
-    git
-    yq
-    jq
-    uv
-
-    clang_17
-    protobuf
-
-    # Rust - https://rust-lang.org
-    cargo-whatfeatures
-    cargo-machete
-    cargo-nextest
-    cargo-expand
-    cargo-cache
-    cargo-deny
-    rustup
-
-    # Node.js - https://nodejs.org/en
-    nodePackages."@tailwindcss/language-server"
-    nodePackages.typescript-language-server
-    nodePackages.vscode-json-languageserver
-    nodePackages.yaml-language-server
-
-    nodePackages.typescript # for tsc
-    nodePackages.prettier # for prettier
-    nodePackages.pnpm # pnpm > *
-    nodejs_20
-    eslint
-
-    # Bun - https://bun.sh
-    bun
-
-    # noelctl
-    # foxbuild
-    # noeldoc
-    # ume
   ];
-
-  # Allow unfree software
-  nixpkgs.config.allowUnfree = true;
 
   homebrew = {
     enable = true;

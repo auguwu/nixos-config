@@ -13,7 +13,12 @@
   machine = ../hosts/${name}/configuration.nix;
   userConfig =
     if darwin
-    then ../users/noel/darwin.nix
+    then {
+      users.users.noel = {
+        name = "noel";
+        home = "/Users/noel";
+      };
+    }
     else ../users/noel;
 
   home-manager =
@@ -28,6 +33,10 @@
 in
   mkSystemFn {
     inherit system;
+
+    specialArgs = {
+      inherit machine;
+    };
 
     modules =
       [

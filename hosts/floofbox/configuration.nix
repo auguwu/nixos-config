@@ -10,8 +10,11 @@
     [
       ../../modules/virtualisation/libvirt.nix
       ../../modules/virtualisation/docker.nix
-      ../../modules/graphical.nix
-      ../../modules/common.nix
+      ../../modules/common/graphical
+
+      ../../modules/common/nixos.nix
+      ../../modules/common
+
       ./hardware.nix
     ]
     ++ lib.optional (lib.pathExists ../../modules/floofbox/wireguard.nix) ../../modules/floofbox/wireguard.nix;

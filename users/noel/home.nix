@@ -50,20 +50,29 @@
       })
       applications);
 in {
-  imports = lib.flatten (lib.optional graphical ../../modules/graphical.home-manager.nix);
+  imports = lib.flatten (lib.optional graphical ../../modules/common/graphical/home-manager.nix);
   home.sessionVariables = {
     EDITOR = "nano";
     VISUAL = "code-insiders";
   };
+
+  home.packages = [
+    (import
+      ../../lib/scripts/rebuild-system/${
+        if machine == "miki"
+        then "darwin"
+        else "nixos"
+      }.nix {
+        inherit machine pkgs;
+      })
+  ];
 
   home.homeDirectory = homedir;
   home.stateVersion = "23.05";
   home.username = "noel";
   home.file =
     {
-      ".scripts/actions-delete".source = ../../scripts/actions-delete;
       ".wallpapers/furry.jpg".source = ../../wallpapers/furry.jpg;
-      ".scripts/rebuild".source = ../../hosts/${machine}/rebuild.sh;
       ".icons/noel.png".source = ../../icons/noel.png;
     }
     // (buildAutoStartFiles (with pkgs; [

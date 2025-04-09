@@ -3,13 +3,11 @@
 # and in the NixOS manual (accessible by running `nixos-help`).
 {pkgs, ...}: {
   imports = [
-    # ../../software/development.nix
-    # ../../software/graphical.nix
-    # ../../software/system.nix
+    ../../modules/common/graphical
 
-    ../../modules/virtualisation/docker.nix
-    ../../modules/graphical.nix
-    ../../modules/common.nix
+    ../../modules/common/nixos.nix
+    ../../modules/common
+
     ./hardware.nix
   ];
 

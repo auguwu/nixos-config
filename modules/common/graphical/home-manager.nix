@@ -93,51 +93,101 @@
     };
   };
 
-  # programs.zed-editor = {
-  #   enable = true;
-  #   extraPackages = with pkgs; [
-  #     nil
-  #     terraform-ls
-  #     clang-tools
-  #     zls
-  #   ];
+  programs.zed-editor = {
+    enable = true;
+    extensions = [
+        # languages
+      "nix"
+      "toml"
+      "sql"
+      "vue"
+      "make"
+      "html"
+      "rust"
+      "terraform"
+      "dockerfile"
+      "docker-compose"
+      "emmet"
 
-  #   userSettings = {
-  #     vim_mode = false;
-  #     format_on_save = "on";
-  #     tab_size = 4;
+      # misc
+      "git-firefly"
+      "wakatime"
+      "env"
 
-  #     buffer_font_size = 19.6;
-  #     buffer_font_family = "JetBrains Mono";
+      # themes
+      "vitesse-theme-refined"
+      "material-icon-theme"
+    ];
 
-  #     current_line_highlight = "none";
+    extraPackages = with pkgs; [
+      clang-tools_18
+      nil
+    ];
 
-  #     cursor_blink = true;
+    userSettings = {
+      # Allows Zed to format all files
+      format_on_save = "on";
 
-  #     ui_font_size = 16;
-  #     ui_font_family = "Inter";
+      # Disables VIM mode. I hate VIM.
+      vim_mode = false;
 
-  #     theme = {
-  #       mode = "system";
-  #       light = "Vitesse Light";
-  #       dark = "Vitesse Dark";
-  #     };
+      # Sets tab size to 4 for all languages
+      tab_size = 4;
 
-  #     terminal = {
-  #       font_family = "JetBrains Mono";
-  #       font_size = 17;
-  #     };
+      buffer_font_size = 17;
+      buffer_font_family = "JetBrains Mono";
 
-  #     features = {
-  #       copilot = false;
-  #     };
+      current_line_highlight = "none";
+      cursor_blink = true;
 
-  #     telemetry = {
-  #       metrics = false;
-  #       diagnostics = true;
-  #     };
-  #   };
-  # };
+      ui_font_size = 16;
+      ui_font_family = "Inter";
+
+      theme = {
+          mode = "system";
+          light = "Vitesse Refined Light";
+          dark = "Vitesse Refined Dark";
+      };
+
+      terminal = {
+          font_family = "JetBrains Mono";
+          font_size = 17;
+      };
+
+      features = {
+          copilot = false;
+      };
+
+      telemetry = {
+          diagnostics = true;
+          metrics = false;
+      };
+
+      # languages = {
+      #     Nix = {
+      #         formatter = "language_server";
+      #         format_on_save = true;
+      #     };
+
+      #     Rust = {
+      #         formatter = "language_server";
+      #         format_on_save = true;
+      #     };
+
+      #     JavaScript = {
+      #         format_on_save = "on";
+      #         formatter.external = {
+      #             command = "${pkgs.nodePackages.prettier}/bin/prettier";
+      #             arguments = ["--stdin-filepath" "{buffer_path}"];
+      #         };
+
+      #         code_actions_on_format = {
+      #             "source.fixAll.eslint" = true;
+      #         };
+      #     };
+      # };
+    };
+  };
 
   programs.vscode = {
     enable = machine != "miki";
