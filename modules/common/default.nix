@@ -68,6 +68,7 @@
       plugins = [charted-helm-plugin];
     })
 
+    minio-client
     minikube
     opentofu
     kubectl

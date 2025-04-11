@@ -392,9 +392,15 @@
         };
 
         "nix.enableLanguageServer" = true;
-        "nix.serverPath" = "${pkgs.nixd}/bin/nixd";
-        "nix.serverSettings".nixd = {
+        "nix.serverPath" = "${pkgs.nil}/bin/nil";
+        "nix.serverSettings".nil = {
           formatting.command = ["nix" "fmt" "--" "--"];
+          nix = {
+            binary = "${pkgs.nixVersions.stable}/bin/nix";
+            maxMemoryMB = 4120;
+            flake.autoArchive = true;
+            flake.autoEvalInputs = true;
+          };
         };
 
         "clang-format.executable" = "${pkgs.clang-tools}/bin/clang-format";
