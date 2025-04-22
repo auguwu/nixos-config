@@ -1,4 +1,3 @@
 modules/floofbox/wireguard.nix
-certs/
-.direnv
-.env
+secrets/*.yaml
+secrets/*.yml

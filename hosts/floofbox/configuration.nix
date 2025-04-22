@@ -34,6 +34,7 @@
 
   # use latest Linux kernel
   boot.kernelPackages = pkgs.linuxPackages_latest;
+  systemd.tmpfiles.rules = ["L+ /var/lib/qemu/firmware - - - - ${pkgs.qemu}/share/qemu/firmware"];
 
   # networking stuff
   networking = {
@@ -66,6 +67,12 @@
 
   # https://nixos.wiki/wiki/Dual_Booting_NixOS_and_Windows#System_time
   time.hardwareClockInLocalTime = true;
+
+  # secrets!
+  sops = {
+    age.keyFile = "/home/noel/.config/sops/age/keys.txt";
+    defaultSopsFile = ../../secrets.yaml;
+  };
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions

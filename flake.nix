@@ -20,7 +20,11 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     hardware.url = "github:NixOS/nixos-hardware";
-    systems.url = "github:nix-systems/default";
+
+    sops-nix = {
+      url = "github:Mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     darwin = {
       url = "github:LnL7/nix-darwin";
@@ -45,13 +49,16 @@
 
   outputs = {
     nixpkgs,
-    systems,
     hardware,
+    sops-nix,
     noelware,
     noel,
     ...
   } @ inputs: let
-    eachSystem = nixpkgs.lib.genAttrs (import systems);
+    inherit (nixpkgs) lib;
+    inherit (lib) genAttrs;
+
+    eachSystem = genAttrs lib.systems.flakeExposed;
     overlays = [
       (import noelware)
       (import noel)
@@ -73,6 +80,8 @@
         modules = [
           hardware.nixosModules.common-cpu-amd
           hardware.nixosModules.common-gpu-amd
+
+          sops-nix.nixosModules.sops
         ];
       };
 

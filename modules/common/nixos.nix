@@ -55,4 +55,6 @@
       nss
     ];
   };
+
+  environment.systemPackages = with pkgs; [sops];
 }

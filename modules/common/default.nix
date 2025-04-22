@@ -11,6 +11,9 @@
     # Prefer the stable version of Nix
     package = pkgs.nixVersions.stable;
 
+    # Optimise /nix automatically per build
+    optimise.automatic = true;
+
     # Set garbage collection to run weekly
     gc = {
       automatic = true;
@@ -22,6 +25,7 @@
       experimental-features = "nix-command flakes";
       sandbox = machine == "miki";
       trusted-users = ["noel"];
+      auto-optimise-store = true;
 
       # A list of trusted binary caches that we will use for Nix packages.
       trusted-substituters = [
