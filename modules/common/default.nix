@@ -117,6 +117,7 @@
     cargo-upgrades
     cargo-nextest
     cargo-machete
+    cargo-expand
     cargo-cache
     cargo-deny
     rustup

@@ -203,8 +203,8 @@
         version = "1.100.0-insiders";
         pname = "vscode-insiders";
         src = builtins.fetchTarball {
-          sha256 = "sha256:0q668sihkjkzhrrqw6zd3jdqrn6njy2b0sccngb1wlmdgv0dfk6j";
-          url = "https://vscode.download.prss.microsoft.com/dbazure/download/insider/ef9b85d17a8cb56ce84b2b36f352598454861620/code-insider-x64-1745214964.tar.gz";
+          sha256 = "sha256:1vmy6yl58mx2inyqj3hgzh7w4qi022q597nvch9lnsgnx9a83q8i";
+          url = "https://vscode.download.prss.microsoft.com/dbazure/download/insider/31609aa0cbb68173eaa27423bbabe74c4a163edd/code-insider-x64-1746076844.tar.gz";
         };
       });
 
