@@ -236,6 +236,8 @@
           ms-vscode.powershell
           catppuccin.catppuccin-vsc-icons
 
+          (pkgs.callPackage ./vscode/opentofu.nix {})
+
           # auguwu.buf-vscode
           # noelware.noeldoc
         ]
