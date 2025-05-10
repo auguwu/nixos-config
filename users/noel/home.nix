@@ -12,7 +12,7 @@
 
   # based off
   # https://github.com/nix-community/home-manager/issues/3447#issuecomment-2213029759
-  buildAutoStartFiles = applications: let
+  buildAutoStartFiles = applications: if machine == "miki" then {} else let
     inherit (lib) map attrsets;
   in
     builtins.listToAttrs (map (pkg: {

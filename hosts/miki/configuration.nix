@@ -20,6 +20,7 @@
     # graphical
     telegram-desktop
     flameshot
+    raycast
     spotify
     slack
   ];

@@ -50,6 +50,7 @@
   outputs = {
     nixpkgs,
     hardware,
+    darwin,
     sops-nix,
     noelware,
     noel,
@@ -60,6 +61,8 @@
 
     eachSystem = genAttrs lib.systems.flakeExposed;
     overlays = [
+      darwin.overlays.default
+
       (import noelware)
       (import noel)
     ];
