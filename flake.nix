@@ -45,6 +45,11 @@
       url = "github:auguwu/nixpkgs-overlay";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    vscode-insiders = {
+      url = "github:auguwu/vscode-insiders-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = {
@@ -54,6 +59,7 @@
     sops-nix,
     noelware,
     noel,
+    vscode-insiders,
     ...
   } @ inputs: let
     inherit (nixpkgs) lib;
@@ -61,6 +67,7 @@
 
     eachSystem = genAttrs lib.systems.flakeExposed;
     overlays = [
+      vscode-insiders.overlays.default
       darwin.overlays.default
 
       (import noelware)

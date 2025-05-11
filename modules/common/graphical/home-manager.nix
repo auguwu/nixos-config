@@ -194,19 +194,9 @@
 
   programs.vscode = {
     enable = machine != "miki";
-    package =
-      (pkgs.vscode.override {
-        isInsiders = true;
-      })
-      .overrideAttrs (oldAttrs: {
-        buildInputs = oldAttrs.buildInputs ++ [pkgs.krb5];
-        version = "1.100.0-insiders";
-        pname = "vscode-insiders";
-        src = builtins.fetchTarball {
-          sha256 = "sha256:0fk2fsiq56mkv3j2w10yhwhyj1agf36ghpa345vjs6kjg89yjypw";
-          url = "https://vscode.download.prss.microsoft.com/dbazure/download/insider/abe4aab6a7ddb38f4a83c38b53cb4f28dddf0c97/code-insider-x64-1746564894.tar.gz";
-        };
-      });
+    package = pkgs.vscode-insiders.overrideAttrs (old: {
+      buildInputs = with pkgs; old.buildInputs ++ [krb5];
+    });
 
     profiles.default = {
       extensions = with pkgs.vscode-extensions;

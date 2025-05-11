@@ -40,12 +40,13 @@ in
 
     modules =
       [
-        # Unfortunately, I do use unfree software. Please don't
-        # kill me stallman senpai
-        {nixpkgs.config.allowUnfree = true;}
+        {
+          nixpkgs = {
+            inherit overlays;
 
-        # Include our overlays
-        {nixpkgs.overlays = overlays;}
+            config.allowUnfree = true;
+          };
+        }
 
         # Include machine-specific configuration from `hosts/$NAME/configuration.nix`
         machine
