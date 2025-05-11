@@ -203,8 +203,8 @@
         version = "1.100.0-insiders";
         pname = "vscode-insiders";
         src = builtins.fetchTarball {
-          sha256 = "sha256:1vmy6yl58mx2inyqj3hgzh7w4qi022q597nvch9lnsgnx9a83q8i";
-          url = "https://vscode.download.prss.microsoft.com/dbazure/download/insider/31609aa0cbb68173eaa27423bbabe74c4a163edd/code-insider-x64-1746076844.tar.gz";
+          sha256 = "sha256:0fk2fsiq56mkv3j2w10yhwhyj1agf36ghpa345vjs6kjg89yjypw";
+          url = "https://vscode.download.prss.microsoft.com/dbazure/download/insider/abe4aab6a7ddb38f4a83c38b53cb4f28dddf0c97/code-insider-x64-1746564894.tar.gz";
         };
       });
 
@@ -235,11 +235,6 @@
           wakatime.vscode-wakatime
           ms-vscode.powershell
           catppuccin.catppuccin-vsc-icons
-
-          (pkgs.callPackage ./vscode/opentofu.nix {})
-
-          # auguwu.buf-vscode
-          # noelware.noeldoc
         ]
         ++ pkgs.vscode-utils.extensionsFromVscodeMarketplace [
           {
@@ -296,6 +291,13 @@
             publisher = "hangxingliu";
             version = "3.0.0";
             sha256 = "sha256-K1fXE0AxkWdHsQC3uUFcJecJqB5PpJVzVdtfPSw4+eg=";
+          }
+
+          {
+            name = "opentofu-vscode";
+            publisher = "auguwu";
+            version = "0.1.3";
+            sha256 = "sha256-nxP+Aum88kzvUYS0AFgBzOuy6S+eWXC1t1H8fFzX0VM=";
           }
         ];
 
@@ -428,6 +430,10 @@
         "window.titleBarStyle" = "custom";
 
         "terminal.integrated.fontSize" = 16;
+
+        "opentofu.lsp.enable" = true;
+        "opentofu.lsp.binary" = "${pkgs.opentofu-ls}/bin/opentofu-ls";
+        "opentofu.binary" = "${pkgs.opentofu}/bin/tofu";
 
         # unfortunately i need powershell to exist
         # i wish it didn't tho but life is life

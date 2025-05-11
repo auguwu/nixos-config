@@ -34,6 +34,7 @@
 
     # lsps
     terraform-ls
+    opentofu-ls
     alejandra
     nil
 
