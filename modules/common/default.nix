@@ -1,20 +1,17 @@
 # This module is common for ALL hosts.
-{
-  pkgs,
-  ...
-}: {
+{pkgs, ...}: {
   time.timeZone = "America/Los_Angeles";
 
   fonts.packages = with pkgs; [
-      nerd-fonts.jetbrains-mono
-      nerd-fonts.geist-mono
+    nerd-fonts.jetbrains-mono
+    nerd-fonts.geist-mono
 
-      noto-fonts-cjk-sans
-      noto-fonts-emoji
-      noto-fonts
+    noto-fonts-cjk-sans
+    noto-fonts-emoji
+    noto-fonts
 
-      jetbrains-mono
-      inter
+    jetbrains-mono
+    inter
   ];
 
   programs.gnupg.agent = {
@@ -84,6 +81,6 @@
     # noelctl
     # noeldoc
 
-    # ume
+    ume
   ];
 }

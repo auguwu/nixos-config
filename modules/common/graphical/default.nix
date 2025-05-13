@@ -4,9 +4,11 @@
     termius
     flameshot
     telegram-desktop
-    (discord-canary.override {
-      withVencord = true;
-    })
+    # (discord-canary.override {
+    #   withVencord = true;
+    # })
+
+    discord-canary
 
     spotify
     thunderbird
